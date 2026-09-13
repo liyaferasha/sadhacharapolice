@@ -2,7 +2,7 @@
 
 
 
-# [] 🎯
+# [sadachaaram police] 🎯
 
 
 ## Basic Details
@@ -59,13 +59,13 @@ git clone [https://github.com/liyaferasha/sadhacharapolice.git](https://github.c
 For Software:
 
 # Screenshots (Add at least 3)
-![dashboard UI](scanned.png)
+![dashboard UI](https://github.com/liyaferasha/sadhacharapolice/blob/main/scanned.png)
 The Sadachaaram Police Dashboard initializing and scanning the grid for moral violations.
 
-![Shammi alert](triggered.png)
+![Shammi alert](https://github.com/liyaferasha/sadhacharapolice/blob/main/triggered.png)
 The trap triggered: The app flashes the Shammi meme alert.
 
-![whatsapp evidence](forwarded.png)
+![whatsapp evidence](https://github.com/liyaferasha/sadhacharapolice/blob/main/forwarded.png)
 The generated WhatsApp forwarded evidence
 
 # Diagrams
