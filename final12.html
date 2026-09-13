@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sadachaaram Police</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --saffron: #FF9A5A;
+            --deep-red: #C41E3A;
+            --yellow: #FFE066;
+            --teal: #4DB6AC;
+            --cream: #FFF8F0;
+            --black: #2D2A26;
+            --card: #FFFDF9;
+            --muted: #7A6A5A;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-image: url('stars.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            color: var(--black);
+            position: relative;
+        }
+
+        body.police-mode {
+            animation: appShake 0.15s infinite, appBlink 0.3s infinite;
+        }
+
+        @keyframes appShake {
+            0%   { transform: translate(0, 0) rotate(0deg); }
+            20%  { transform: translate(-6px, 3px) rotate(-0.8deg); }
+            40%  { transform: translate(5px, -4px) rotate(0.8deg); }
+            60%  { transform: translate(-4px, 2px) rotate(-0.5deg); }
+            80%  { transform: translate(4px, -3px) rotate(0.5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        @keyframes appBlink {
+            0%, 100% { filter: brightness(1); }
+            50%      { filter: brightness(1.3) hue-rotate(-10deg) saturate(1.3); }
+        }
+
+        #app-wrapper {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 28px;
+            padding: 42px 28px 36px;
+            width: 100%;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            border: 2px solid var(--yellow);
+        }
+
+        .live-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--deep-red);
+            color: white;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 6px 13px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.06em;
+            border: 2px solid var(--yellow);
+            z-index: 2;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #FFE066;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        h1 {
+            font-family: 'Lilita One', cursive;
+            font-size: 2.6rem;
+            line-height: 1.05;
+            letter-spacing: 1px;
+            color: var(--deep-red);
+            margin-top: 14px;
+            margin-bottom: 32px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 var(--yellow);
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 18px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--saffron);
+            color: white;
+            box-shadow: 0 7px 0 #E07A3A;
+        }
+        .btn-primary:active {
+            transform: translateY(3px);
+            box-shadow: 0 4px 0 #E07A3A;
+        }
+
+        .btn-coral {
+            background: var(--deep-red);
+            color: white;
+            box-shadow: 0 7px 0 #9B1830;
+            margin-top: 14px;
+        }
+        .btn-coral:active {
+            transform: translateY(3px);
+            box-shadow: 0 4px 0 #9B1830;
+        }
+
+        .btn-small {
+            padding: 11px 16px;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 0 #E07A3A;
+        }
+        .btn-small.btn-coral {
+            box-shadow: 0 5px 0 #9B1830;
+        }
+        .btn-small:active {
+            transform: translateY(2px);
+        }
+
+        #uncle-thoughts {
+            margin-top: 20px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            background: var(--yellow);
+            color: var(--black);
+            padding: 12px 18px;
+            border-radius: 999px;
+            display: none;
+            border: 2px solid var(--black);
+        }
+
+        #videoElement {
+            width: 100%;
+            aspect-ratio: 4/3;
+            transform: scaleX(-1);
+            border-radius: 24px;
+            border: 3px solid var(--yellow);
+            background: #000;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+            display: none;
+            object-fit: cover;
+        }
+
+        /* ===== MEME ===== */
+        #meme-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            width: 96%;
+            max-width: 560px;
+        }
+
+        .meme-image-box {
+            background: var(--cream);
+            border-radius: 26px;
+            padding: 12px;
+            box-shadow: 0 22px 45px rgba(0,0,0,0.2);
+            border: 2px solid var(--saffron);
+            overflow: hidden;
+        }
+
+        .meme-image-box img {
+            width: 100%;
+            border-radius: 18px;
+            object-fit: cover;
+            transform: scale(1.15);
+            max-height: 560px;
+            display: block;
+        }
+
+        .meme-caption-box {
+            margin-top: 16px;
+            background: var(--yellow);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+            border: 2px solid var(--black);
+            text-align: center;
+        }
+
+        .meme-caption-box span {
+            font-family: 'Lilita One', cursive;
+            font-size: 1.75rem;
+            color: var(--deep-red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== WHATSAPP ===== */
+        #whatsapp-page {
+            display: none;
+            width: 100%;
+            max-width: 520px;
+            height: 82vh;
+            max-height: 780px;
+            background: #ECE5DD;
+            border-radius: 26px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            flex-direction: column;
+            border: 2px solid var(--yellow);
+        }
+
+        .wa-header {
+            background: #075E54;
+            color: white;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .wa-back { font-size: 1.5rem; }
+        .wa-avatar {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: var(--saffron);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1.2rem;
+            border: 2px solid var(--yellow);
+        }
+        .wa-group-info { flex: 1; min-width: 0; }
+        .wa-group-name { font-size: 1.1rem; font-weight: 700; }
+        .wa-group-status { font-size: 0.75rem; opacity: 0.9; }
+        .wa-header-icons { display: flex; gap: 16px; font-size: 1.25rem; }
+
+        .wa-chat-body {
+            flex: 1;
+            padding: 16px 14px;
+            overflow-y: auto;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4cfc7' fill-opacity='0.35'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .wa-message {
+            background: #E7FFDB;
+            border-radius: 12px 12px 3px 12px;
+            padding: 8px 10px 6px;
+            max-width: 88%;
+            margin-left: auto;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+
+        .wa-forwarded {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #667781;
+            margin-bottom: 4px;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        #evidenceCanvas {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .wa-caption {
+            font-size: 0.98rem;
+            font-weight: 500;
+            color: #111b21;
+            line-height: 1.35;
+            margin-bottom: 3px;
+        }
+
+        .wa-meta {
+            display: flex;
+            justify-content: flex-end;
+            gap: 4px;
+            font-size: 0.72rem;
+            color: #667781;
+        }
+
+        .wa-ticks { color: #53bdeb; font-size: 0.9rem; letter-spacing: -1.5px; }
+
+        .wa-input-bar {
+            background: #F0F2F5;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wa-input {
+            flex: 1;
+            background: white;
+            border-radius: 28px;
+            padding: 13px 18px;
+            font-size: 1rem;
+            color: #667781;
+        }
+
+        .wa-send-btn {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: #075E54;
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== FINAL PAGE ===== */
+        #final-page {
+            display: none;
+            background: var(--card);
+            border-radius: 28px;
+            padding: 42px 28px 32px;
+            width: 100%;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 2px solid var(--yellow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .desi-badge {
+            display: inline-block;
+            background: var(--yellow);
+            color: var(--black);
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 7px 16px;
+            border-radius: 999px;
+            margin-bottom: 22px;
+            border: 2px solid var(--black);
+            letter-spacing: 0.5px;
+        }
+
+        .final-icon {
+            width: 88px;
+            height: 88px;
+            background: var(--saffron);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.6rem;
+            margin: 0 auto 18px;
+            border: 3px solid var(--yellow);
+            box-shadow: 0 7px 0 #E07A3A;
+        }
+
+        #final-page h2 {
+            font-family: 'Lilita One', cursive;
+            font-size: 2rem;
+            color: var(--deep-red);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 var(--yellow);
+        }
+
+        #final-page p {
+            font-size: 1.05rem;
+            color: var(--muted);
+            font-weight: 600;
+            margin-bottom: 28px;
+            line-height: 1.4;
+        }
+
+        /* ===== CUSTOM CALL ACHAN MODAL ===== */
+        #call-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .call-modal-box {
+            background: var(--card);
+            border-radius: 28px;
+            padding: 36px 28px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            border: 2px solid var(--yellow);
+            box-shadow: 0 22px 45px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        .call-modal-icon {
+            font-size: 3.4rem;
+            margin-bottom: 14px;
+        }
+
+        .call-modal-box h3 {
+            font-family: 'Lilita One', cursive;
+            font-size: 1.75rem;
+            color: var(--deep-red);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 var(--yellow);
+        }
+
+        .call-modal-box p {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 26px;
+            line-height: 1.4;
+        }
+
+        .call-modal-box .btn {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-wrapper">
+
+    <div id="ui-container" class="card">
+        <div class="live-badge">
+            <span class="live-dot"></span> LIVE
+        </div>
+
+        <h1>SADACHAARAM<br>POLICE</h1>
+
+        <button id="startButton" class="btn btn-primary">
+            START SCANNING ↗
+        </button>
+
+        <div id="uncle-thoughts"></div>
+    </div>
+
+    <video id="videoElement" autoplay playsinline muted></video>
+
+    <div id="whatsapp-page">
+        <div class="wa-header">
+            <div class="wa-back">←</div>
+            <div class="wa-avatar">K</div>
+            <div class="wa-group-info">
+                <div class="wa-group-name">Kudumbayogam</div>
+                <div class="wa-group-status">You, Achan, Amma, Ammavan +12</div>
+            </div>
+            <div class="wa-header-icons">
+                <span>📹</span>
+                <span>📞</span>
+                <span>⋮</span>
+            </div>
+        </div>
+
+        <div class="wa-chat-body">
+            <div class="wa-message">
+                <div class="wa-forwarded"><span>↪</span> Forwarded</div>
+                <canvas id="evidenceCanvas" width="640" height="480"></canvas>
+                <div class="wa-caption">Eee kuttiyude achanum ammayum ithu ariyunundo?! 😡</div>
+                <div class="wa-meta">
+                    <span>Just now</span>
+                    <span class="wa-ticks">✓✓</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="wa-input-bar">
+            <div class="wa-input">Message</div>
+            <button class="wa-send-btn">➤</button>
+        </div>
+    </div>
+
+    <div id="final-page">
+        <div class="desi-badge">SENT TO FAMILY</div>
+        <div class="final-icon">📸</div>
+        
+        <p>Photo has been forwarded to<br><strong>Kudumbayogam Group</strong></p>
+
+        <button class="btn btn-primary btn-small" id="resetButton">Continue Scanning</button>
+        <button class="btn btn-coral btn-small" id="callAchanButton">📞 Call Achan</button>
+    </div>
+</div>
+
+<!-- MEME -->
+<div id="meme-container">
+    <div class="meme-image-box">
+        <img id="memeImage" src="shammi.jpeg" alt="Shammi"
+             onerror="this.src='https://placehold.co/520x500/FF9A5A/FFFFFF?text=Shammi+Thatha'">
+    </div>
+    <div class="meme-caption-box">
+        <span>എന്താ മക്കളേ പരിപാടി???</span>
+    </div>
+</div>
+
+<!-- CALL MODAL -->
+<div id="call-modal">
+    <div class="call-modal-box">
+        <div class="call-modal-icon">📞</div>
+        <h3>Calling Achan...</h3>
+        <p>Achan is picking up...</p>
+        <button class="btn btn-coral" id="closeCallModal">OKAY DA</button>
+    </div>
+</div>
+
+<audio id="uncleAudio" preload="auto">
+    <source src="uncle.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
+<script>
+    const video = document.getElementById('videoElement');
+    const startButton = document.getElementById('startButton');
+    const uncleThoughts = document.getElementById('uncle-thoughts');
+    const canvas = document.getElementById('evidenceCanvas');
+    const ctx = canvas.getContext('2d');
+    const memeContainer = document.getElementById('meme-container');
+    const uncleAudio = document.getElementById('uncleAudio');
+    const whatsappPage = document.getElementById('whatsapp-page');
+    const finalPage = document.getElementById('final-page');
+    const resetButton = document.getElementById('resetButton');
+    const callAchanButton = document.getElementById('callAchanButton');
+    const callModal = document.getElementById('call-modal');
+    const closeCallModal = document.getElementById('closeCallModal');
+
+    let isPoliceMode = false;
+    let evidenceCaptured = false;
+    let audioCtx = null;
+    let sirenOscillator = null;
+    let sirenGain = null;
+    let sirenInterval = null;
+
+    function playSiren(durationMs = 4000) {
+        if (sirenOscillator) return;
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        sirenOscillator = audioCtx.createOscillator();
+        sirenOscillator.type = 'sawtooth';
+        sirenGain = audioCtx.createGain();
+        sirenGain.gain.value = 0.15;
+
+        sirenOscillator.connect(sirenGain);
+        sirenGain.connect(audioCtx.destination);
+        sirenOscillator.start();
+
+        let highPitch = true;
+        sirenInterval = setInterval(() => {
+            if (sirenOscillator) {
+                sirenOscillator.frequency.setValueAtTime(highPitch ? 900 : 600, audioCtx.currentTime);
+                highPitch = !highPitch;
+            }
+        }, 300);
+
+        setTimeout(stopSiren, durationMs);
+    }
+
+    function stopSiren() {
+        if (sirenInterval) { clearInterval(sirenInterval); sirenInterval = null; }
+        if (sirenOscillator) {
+            try { sirenOscillator.stop(); sirenOscillator.disconnect(); } catch (e) {}
+            sirenOscillator = null;
+        }
+        if (sirenGain) {
+            try { sirenGain.disconnect(); } catch (e) {}
+            sirenGain = null;
+        }
+    }
+
+    async function initCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' },
+                audio: false
+            });
+            video.srcObject = stream;
+            return new Promise(resolve => { video.onloadedmetadata = () => resolve(); });
+        } catch (err) {
+            alert("Camera access is required!");
+        }
+    }
+
+    function capturePhoto(detections) {
+        ctx.save();
+        ctx.scale(-1, 1);
+        ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+        ctx.restore();
+
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = "#C41E3A";
+        detections.forEach(d => {
+            const box = d.detection.box;
+            const mirroredX = canvas.width - (box.x + box.width);
+            const centerX = mirroredX + (box.width / 2);
+            const centerY = box.y + (box.height / 2);
+            const radius = Math.max(box.width, box.height) / 1.45;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.stroke();
+        });
+
+        const timeString = new Date().toLocaleTimeString();
+        ctx.font = "900 36px 'Plus Jakarta Sans', Arial Black, sans-serif";
+        ctx.textAlign = "left";
+
+        ctx.lineWidth = 7;
+        ctx.strokeStyle = "#FFE066";
+        ctx.strokeText(`FLAGGED: ${timeString}`, 18, 52);
+
+        ctx.fillStyle = "#C41E3A";
+        ctx.fillText(`FLAGGED: ${timeString}`, 18, 52);
+    }
+
+    async function detectFaces() {
+        if (evidenceCaptured) return;
+
+        try {
+            const options = new faceapi.SsdMobilenetv1Options({ minConfidence: 0.65 });
+            const detections = await faceapi.detectAllFaces(video, options).withAgeAndGender();
+
+            let males = 0;
+            let females = 0;
+
+            detections.forEach(d => {
+                if (d.genderProbability < 0.82) return;
+
+                if (d.gender === 'male') males++;
+                else if (d.gender === 'female') females++;
+            });
+
+            if (males >= 1 && females >= 1) {
+                if (!isPoliceMode) {
+                    isPoliceMode = true;
+                    evidenceCaptured = true;
+                    document.body.classList.add('police-mode');
+
+                    playSiren(4000);
+                    capturePhoto(detections);
+
+                    setTimeout(() => {
+                        document.body.classList.remove('police-mode');
+                        video.style.display = "none";
+                        document.getElementById('ui-container').style.display = "none";
+                        memeContainer.style.display = "block";
+                        uncleAudio.currentTime = 0;
+                        uncleAudio.play().catch(() => {});
+                    }, 4000);
+
+                    setTimeout(() => {
+                        memeContainer.style.display = "none";
+                        whatsappPage.style.display = "flex";
+                    }, 8000);
+
+                    setTimeout(() => {
+                        whatsappPage.style.display = "none";
+                        finalPage.style.display = "block";
+                    }, 14000);
+                }
+            } else {
+                uncleThoughts.style.display = "block";
+                if (males === 0 && females === 0) {
+                    uncleThoughts.innerText = "Scanning അനാചാരം...";
+                } else if (males > 0 && females === 0) {
+                    uncleThoughts.innerText = `Detected: ${males} Male`;
+                } else if (females > 0 && males === 0) {
+                    uncleThoughts.innerText = `Detected: ${females} Female`;
+                }
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+
+        if (!evidenceCaptured) setTimeout(detectFaces, 400);
+    }
+
+    function resetEverything() {
+        evidenceCaptured = false;
+        isPoliceMode = false;
+        document.body.classList.remove('police-mode');
+        stopSiren();
+
+        finalPage.style.display = "none";
+        whatsappPage.style.display = "none";
+        memeContainer.style.display = "none";
+        document.getElementById('ui-container').style.display = "block";
+        video.style.display = "block";
+        uncleThoughts.style.display = "block";
+        uncleThoughts.innerText = "Scanning Grid...";
+        detectFaces();
+    }
+
+    callAchanButton.addEventListener('click', () => {
+        callModal.style.display = "flex";
+    });
+
+    closeCallModal.addEventListener('click', () => {
+        callModal.style.display = "none";
+    });
+
+    startButton.addEventListener('click', async () => {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        startButton.style.display = 'none';
+
+        const MODEL_URL = 'https://vladmandic.github.io/face-api/model/';
+        await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+        await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL);
+
+        await initCamera();
+        uncleThoughts.style.display = "block";
+        video.style.display = "block";
+        detectFaces();
+    });
+
+    resetButton.addEventListener('click', resetEverything);
+</script>
+</body>
+</html>
